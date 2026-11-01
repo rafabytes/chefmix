@@ -6,7 +6,7 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-define( 'CHEFMIX_VERSION', '1.0.0' );
+define( 'CHEFMIX_VERSION', '1.1.0' );
 define( 'CHEFMIX_DIR', get_template_directory() );
 define( 'CHEFMIX_URI', get_template_directory_uri() );
 
@@ -21,6 +21,7 @@ foreach ( [
 	'social',
 	'auth',
 	'cache',
+	'seo',
 	'admin',
 ] as $module ) {
 	require_once CHEFMIX_DIR . "/inc/{$module}.php";

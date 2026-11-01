@@ -27,6 +27,14 @@ if ( '/%postname%/' !== get_option( 'permalink_structure' ) ) {
 	cmx_cli( 'Links permanentes: /%postname%/' );
 }
 
+// Ícone do site (Configurações → Geral) a partir de assets/brand/icon-512.png.
+$icon = cmx_register_site_icon();
+if ( is_wp_error( $icon ) ) {
+	cmx_cli( 'Ícone do site: ' . $icon->get_error_message() );
+} else {
+	cmx_cli( $icon ? "Ícone do site cadastrado (anexo #{$icon})." : 'Ícone do site já estava definido.' );
+}
+
 // As regras de URL e os papéis são (re)gravados na próxima requisição pelo próprio tema.
 delete_option( 'chefmix_rewrite_version' );
 delete_option( 'chefmix_roles_version' );

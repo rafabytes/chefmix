@@ -44,6 +44,20 @@ O nome da pasta no servidor precisa continuar `chefemix-theme` (é o que o WordP
 
 **Assets sem 403:** além das permissões do deploy, o [.htaccess](.htaccess) do tema libera explicitamente CSS/JS/fontes/imagens (sobrepõe bloqueios herdados), corrige o MIME do `.woff2`, manda CORS nas fontes (CDN, www ↔ sem www) e bloqueia só arquivos de desenvolvimento.
 
+### Ícone do site, favicon e SEO
+
+Arquivos da marca em [assets/brand/](assets/brand/):
+
+| Arquivo | Uso |
+|---|---|
+| `icon.svg` → `icon-512.png` | **Ícone do site** do WordPress (Configurações → Geral). O WordPress gera 32, 180 (Apple), 192 e 270 px. |
+| `favicon.svg` | Favicon vetorial das abas (site, painel e login). |
+| `og-default.png` (1200×630) | Imagem de compartilhamento padrão (WhatsApp, redes sociais). Receitas com foto usam a própria foto. |
+
+O ícone do site é cadastrado sozinho na primeira vez que um administrador abre o painel (ou com `php tools/setup.php`) — só se ainda não houver um; depois pode ser trocado normalmente em Configurações → Geral. Para regerar os PNGs depois de mexer no SVG ou no visual: `npm run build && php tools/brand.php` (usa o Chrome/Edge instalado).
+
+[inc/seo.php](inc/seo.php) imprime descrição, Open Graph e Twitter Card (receita, chef, cozinha, listas) e marca `/salvos/` como `noindex`. Se um plugin de SEO (Yoast, Rank Math, AIOSEO, SEOPress, The SEO Framework) for ativado, o tema deixa as metatags com ele. Vale preencher o **Descrição** em Configurações → Geral — sem ela o tema usa um texto padrão.
+
 ### LiteSpeed Cache
 
 O tema já se protege das otimizações que quebrariam o React/Swup ([inc/cache.php](inc/cache.php)):

@@ -59,9 +59,10 @@ add_filter( 'litespeed_optimize_css_excludes', static fn( $list ) => cmx_cache_e
 
 unset( $cmx_cache_dist, $cmx_cache_filter );
 
-// Deploy novo (dist/main.js mudou): limpa todo o cache de páginas uma vez, para o HTML acompanhar os assets.
+// Deploy novo (dist/main.js ou CHEFMIX_VERSION mudou): limpa todo o cache de páginas uma vez.
+// Mudou só PHP (cabeçalho, metatags)? Suba a versão em functions.php e style.css.
 add_action( 'init', function () {
-	$build = (string) cmx_asset( 'main.js' )['ver'];
+	$build = CHEFMIX_VERSION . '|' . cmx_asset( 'main.js' )['ver'];
 	if ( get_option( 'chefmix_cache_build' ) !== $build ) {
 		update_option( 'chefmix_cache_build', $build, true );
 		do_action( 'litespeed_purge_all', 'chefmix: build novo do tema' );
