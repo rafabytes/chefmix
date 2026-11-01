@@ -1,0 +1,14 @@
+/*
+Theme Name: ChefMix
+Theme URI: https://rafabytes.com/chefmix
+Author: Rafa Bytes
+Author URI: https://rafabytes.com
+Description: Receitas guiadas passo a passo com utensílios comuns de cozinha: mise en place, fogo, tempo e o ponto certo em cada passo, timers, tela sempre ligada e comandos de voz. Construído com WordPress, Parcel, TailwindCSS, Swup.js e React.
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 8.0
+Text Domain: chefmix
+License: GPL-2.0-or-later
+*/
+
+/* Os estilos do tema são compilados pelo Parcel + Tailwind (src/css/main.css → dist/main.css). */

@@ -1,0 +1,42 @@
+# ChefMix — regras da pasta do tema (Apache/LiteSpeed).
+# Sem "Options" nem diretivas que exijam AllowOverride amplo: um .htaccess inválido aqui daria erro 500
+# em todos os assets do tema.
+
+# Tipos corretos para fontes e ícones (alguns servidores entregam .woff2 como octet-stream).
+<IfModule mod_mime.c>
+	AddType font/woff2 .woff2
+	AddType font/woff .woff
+	AddType image/svg+xml .svg
+	AddType image/webp .webp
+	AddType application/javascript .js
+	AddType text/css .css
+</IfModule>
+
+# Assets estáticos sempre liberados (evita 403 herdado de regras de segurança em pastas acima).
+<FilesMatch "\.(css|js|woff2?|ttf|otf|svg|png|jpe?g|gif|webp|avif|ico)$">
+	<IfModule mod_authz_core.c>
+		Require all granted
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order allow,deny
+		Allow from all
+	</IfModule>
+</FilesMatch>
+
+# Fontes também via CDN do LiteSpeed/QUIC.cloud ou www ↔ sem www (o navegador bloqueia fonte sem CORS).
+<IfModule mod_headers.c>
+	<FilesMatch "\.(woff2?|ttf|otf)$">
+		Header set Access-Control-Allow-Origin "*"
+	</FilesMatch>
+</IfModule>
+
+# Arquivos de desenvolvimento e o estado do deploy por FTP não ficam públicos.
+<FilesMatch "^(package(-lock)?\.json|tailwind\.config\.js|\.postcssrc|README\.md|\.ftp-deploy-sync-state\.json|\.git.*)$">
+	<IfModule mod_authz_core.c>
+		Require all denied
+	</IfModule>
+	<IfModule !mod_authz_core.c>
+		Order allow,deny
+		Deny from all
+	</IfModule>
+</FilesMatch>

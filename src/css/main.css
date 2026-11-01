@@ -1,0 +1,352 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Linguagem visual
+ * - Base clara e fria (mist), aurora pastel ao fundo (referência: inZOI).
+ * - Material de vidro líquido: translúcido, desfoque + saturação, borda de luz e brilho especular
+ *   (referência: Liquid Glass). Usado só em superfícies flutuantes (cabeçalho, abas, painéis, controles).
+ * - Tipografia grande e firme; números tabulares nos mostradores.
+ */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-mist font-sans text-ink antialiased;
+    overflow-x: clip;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  :focus-visible {
+    outline: 2px solid theme('colors.iris.500');
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: theme('colors.iris.100');
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  button {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------- Fundo */
+  .aurora {
+    @apply pointer-events-none fixed inset-0 -z-10 overflow-hidden;
+  }
+  .blob {
+    @apply absolute rounded-full opacity-70 blur-3xl animate-drift;
+  }
+
+  /* --------------------------------------------------------------- Vidro */
+  .glass {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(140deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.46));
+    -webkit-backdrop-filter: blur(24px) saturate(185%);
+    backdrop-filter: blur(24px) saturate(185%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.35),
+      0 1px 2px rgba(22, 22, 40, 0.04),
+      0 18px 44px -22px rgba(40, 30, 110, 0.32);
+  }
+  .glass::before {
+    /* brilho especular no canto superior */
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(120% 80% at 12% -10%, rgba(255, 255, 255, 0.75), transparent 46%);
+  }
+  /* Painéis modais sobre fundo escurecido: vidro mais denso para não acinzentar. */
+  .glass-solid {
+    background: linear-gradient(140deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.88));
+  }
+  .glass-card {
+    @apply bg-white/70 shadow-soft ring-1 ring-white;
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  /* -------------------------------------------------------------- Marca */
+  .logo-orb {
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-white;
+    background:
+      radial-gradient(80% 60% at 30% 20%, rgba(255, 255, 255, 0.55), transparent 60%),
+      linear-gradient(140deg, theme('colors.iris.500'), theme('colors.mint.400'));
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 6px 16px -6px rgba(111, 92, 255, 0.6);
+  }
+  .text-gradient {
+    background: linear-gradient(100deg, theme('colors.iris.500'), theme('colors.mint.500'));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* ---------------------------------------------------------- Tipografia */
+  .eyebrow {
+    @apply mb-2 text-xs font-bold uppercase tracking-[0.2em] text-iris-600;
+  }
+  .page-title {
+    @apply text-4xl font-extrabold tracking-tight sm:text-6xl;
+  }
+  .section-title {
+    @apply text-3xl font-extrabold tracking-tight sm:text-4xl;
+  }
+  .link {
+    @apply font-semibold text-iris-600 underline decoration-iris-200 underline-offset-4 hover:decoration-iris-500;
+  }
+  .prose-cmx {
+    @apply space-y-4 text-lg leading-relaxed text-ink-soft;
+  }
+  .prose-cmx h2,
+  .prose-cmx h3 {
+    @apply pt-4 text-2xl font-bold text-ink;
+  }
+  .prose-cmx a {
+    @apply link;
+  }
+  .prose-cmx ul {
+    @apply list-disc pl-6;
+  }
+  .prose-cmx ol {
+    @apply list-decimal pl-6;
+  }
+
+  /* ------------------------------------------------------------- Botões */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-full px-5 py-2.5 text-[0.95rem] font-semibold transition duration-200 active:scale-[.97] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-lg {
+    @apply h-14 px-7 text-base;
+  }
+  .btn-primary {
+    @apply bg-ink text-white hover:bg-ink-soft;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 24px -12px rgba(22, 22, 29, 0.6);
+  }
+  .btn-accent {
+    @apply text-white;
+    background:
+      radial-gradient(120% 90% at 20% 0%, rgba(255, 255, 255, 0.35), transparent 50%),
+      linear-gradient(120deg, theme('colors.iris.500'), theme('colors.iris.600') 55%, #7a4dff);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 14px 30px -12px rgba(111, 92, 255, 0.75);
+  }
+  .btn-accent:hover {
+    filter: brightness(1.06);
+  }
+  .btn-glass {
+    @apply bg-white/60 text-ink ring-1 ring-white hover:bg-white/90;
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    backdrop-filter: blur(18px) saturate(180%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 8px 22px -14px rgba(40, 30, 110, 0.4);
+  }
+  .icon-btn {
+    @apply inline-flex h-11 w-11 items-center justify-center rounded-full text-ink-soft transition hover:bg-white/80 hover:text-ink active:scale-95;
+  }
+
+  /* ------------------------------------------------------- Navegação */
+  .nav-link {
+    @apply rounded-full px-4 py-2 text-sm font-semibold text-ink-soft transition hover:bg-white/80 hover:text-ink aria-[current=page]:bg-white aria-[current=page]:text-ink;
+  }
+  .menu-item {
+    @apply flex items-center gap-2.5 rounded-2xl px-3 py-2.5 text-sm font-semibold transition hover:bg-white/80;
+  }
+  .tabbar {
+    @apply fixed inset-x-0 z-40 px-3;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+  .tab {
+    @apply flex flex-1 flex-col items-center justify-center gap-0.5 rounded-full py-2 text-[11px] font-semibold text-ink-mute transition active:scale-95 aria-[current=page]:bg-white aria-[current=page]:text-ink;
+  }
+  .tab[aria-current='page'] {
+    box-shadow: inset 0 1px 0 #fff, 0 6px 14px -8px rgba(40, 30, 110, 0.45);
+  }
+  .search-sheet {
+    @apply fixed inset-0 z-50;
+  }
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-white;
+  }
+
+  /* -------------------------------------------------------- Chips/pills */
+  .pill-glass {
+    @apply inline-flex items-center gap-2 rounded-full bg-white/60 px-3.5 py-1.5 text-sm font-semibold text-ink-soft ring-1 ring-white transition hover:bg-white;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+  .chip-glass {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-white/65 px-2.5 py-1 text-xs font-semibold text-ink ring-1 ring-white/80;
+    -webkit-backdrop-filter: blur(12px) saturate(170%);
+    backdrop-filter: blur(12px) saturate(170%);
+  }
+  .chip-soft {
+    @apply inline-flex items-center gap-1.5 rounded-full bg-white/60 px-3 py-1.5 font-medium ring-1 ring-ink/5;
+  }
+  .chip-filter {
+    @apply inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-white/60 px-4 py-2.5 text-sm font-semibold text-ink-soft ring-1 ring-white transition hover:bg-white hover:text-ink aria-[current=page]:bg-ink aria-[current=page]:text-white aria-[current=page]:ring-ink;
+  }
+  .chip-dot {
+    @apply h-2.5 w-2.5 rounded-full;
+    background: linear-gradient(135deg, var(--c1, theme('colors.iris.200')), var(--c2, theme('colors.mint.100')));
+    box-shadow: inset 0 0 0 1px rgba(22, 22, 29, 0.08);
+  }
+  .ing-chip {
+    @apply inline-flex items-center gap-1.5 rounded-2xl bg-white/80 px-3.5 py-2 text-[0.95rem] text-ink-soft ring-1 ring-ink/5;
+  }
+  .ing-chip b {
+    @apply font-bold text-ink;
+  }
+
+  /* ------------------------------------------------------------- Capas */
+  .cover {
+    @apply relative isolate flex items-center justify-center overflow-hidden;
+    background:
+      radial-gradient(90% 70% at 15% 10%, rgba(255, 255, 255, 0.85), transparent 45%),
+      radial-gradient(70% 60% at 90% 100%, rgba(255, 255, 255, 0.45), transparent 60%),
+      linear-gradient(140deg, var(--c1), var(--c2));
+  }
+  .cover-orb {
+    @apply relative inline-flex items-center justify-center rounded-full;
+    background: radial-gradient(70% 55% at 32% 22%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.35) 55%, rgba(255, 255, 255, 0.15));
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow:
+      inset 0 2px 1px rgba(255, 255, 255, 0.9),
+      inset 0 -8px 18px rgba(255, 255, 255, 0.35),
+      0 24px 40px -18px rgba(40, 30, 110, 0.35);
+  }
+  .feature-orb {
+    @apply inline-flex h-14 w-14 items-center justify-center rounded-2xl text-ink;
+    background:
+      radial-gradient(90% 70% at 25% 15%, rgba(255, 255, 255, 0.9), transparent 55%),
+      linear-gradient(140deg, var(--c1), var(--c2));
+    box-shadow: inset 0 1px 1px #fff, 0 10px 22px -14px rgba(40, 30, 110, 0.45);
+  }
+
+  /* ------------------------------------- Mostradores de ajuste (fogo, tempo…) */
+  .dial {
+    @apply flex flex-col items-center justify-center gap-1 rounded-3xl bg-white/75 px-2 py-4 ring-1 ring-white;
+    box-shadow: inset 0 1px 0 #fff, 0 10px 24px -18px rgba(40, 30, 110, 0.5);
+  }
+  .dial-label {
+    @apply inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider text-ink-mute;
+  }
+  .dial-value {
+    @apply inline-flex items-center gap-1 text-3xl font-extrabold tabular-nums tracking-tight sm:text-4xl;
+  }
+
+  /* -------------------------------------------------------------- Stats */
+  .stat {
+    @apply rounded-3xl bg-white/60 px-4 py-3 ring-1 ring-white;
+  }
+  .stat dt {
+    @apply text-[11px] font-bold uppercase tracking-wider text-ink-mute;
+  }
+  .stat dd {
+    @apply mt-0.5 text-lg font-bold tracking-tight;
+  }
+
+  /* ------------------------------------------------------------- Pager */
+  .pager > * {
+    @apply inline-flex h-11 min-w-[2.75rem] items-center justify-center rounded-full bg-white/60 px-3 font-semibold ring-1 ring-white;
+  }
+  .pager > .current {
+    @apply bg-ink text-white;
+  }
+
+  /* ------------------------------------------------------------ Formulário */
+  .input {
+    @apply w-full rounded-2xl border-0 bg-white/80 px-4 py-3.5 text-ink ring-1 ring-ink/10 transition placeholder:text-ink-mute focus:bg-white focus:outline-none focus:ring-2 focus:ring-iris-400;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-semibold;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------------ Swup */
+.transition-fade {
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease;
+}
+html.is-animating .transition-fade {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* Tema escuro do modo cozinhar (menos brilho na cozinha à noite). */
+[data-theme='dark'] .glass {
+  background: linear-gradient(140deg, rgba(42, 42, 62, 0.86), rgba(22, 22, 34, 0.8));
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 24px 60px -24px rgba(0, 0, 0, 0.8);
+}
+[data-theme='dark'] .glass::before {
+  background: radial-gradient(120% 80% at 12% -10%, rgba(255, 255, 255, 0.08), transparent 46%);
+}
+[data-theme='dark'] .text-ink-mute {
+  color: rgba(255, 255, 255, 0.55);
+}
+[data-theme='dark'] .text-ink-soft {
+  color: rgba(255, 255, 255, 0.74);
+}
+[data-theme='dark'] .blob {
+  opacity: 0.45;
+}
+
+/* Rolagem travada por diálogos/modo cozinhar (src/js/lib/scrollLock.js). */
+html.cmx-scroll-locked,
+html.cmx-scroll-locked body {
+  overflow: hidden;
+}
+
+/* Modo cozinhar aberto: somem o cabeçalho e a barra de abas. */
+html.cmx-cooking .tabbar,
+html.cmx-cooking [data-site-header] {
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Navegadores sem backdrop-filter: vidro vira branco quase opaco (legibilidade primeiro). */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass,
+  .glass-card,
+  .btn-glass,
+  .chip-glass,
+  .pill-glass {
+    background: rgba(255, 255, 255, 0.94);
+  }
+}
