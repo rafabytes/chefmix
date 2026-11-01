@@ -32,24 +32,17 @@ O tema não tem caminhos fixos: tudo sai de `home_url()`, `rest_url()` e de URLs
 
 O site **precisa de HTTPS** em produção: o navegador só libera *tela sempre ligada* (Wake Lock), *microfone* (comandos de voz) e o botão do Google em contexto seguro.
 
-### Deploy (GitHub → FTP)
+### Deploy (GitHub → cPanel)
 
-Repositório: `github.com/rafabytes/chefmix` (a raiz do repo é a pasta do tema). A cada push na `main`, o workflow [.github/workflows/deploy.yml](.github/workflows/deploy.yml) roda `npm ci && npm run build` e envia o tema para `public_html/chefmix/wp-content/themes/chefemix-theme/` (só os arquivos alterados). Também dá para rodar à mão em **Actions → Deploy → Run workflow**.
+Repositório: `github.com/rafabytes/chefmix` (a raiz do repo é a pasta do tema), clonado no cPanel em **Git Version Control** (`~/repositories/chefmix`). O servidor não roda Node: o `dist/` é versionado, então **rode `npm run build` e commite o `dist/` antes de cada push**.
 
-Em **Settings → Secrets and variables → Actions** do repositório:
+Para publicar: `git push` → no cPanel, **Manage → Pull or Deploy → Update from Remote → Deploy HEAD Commit**.
 
-| Tipo | Nome | Valor |
-|---|---|---|
-| Secret | `FTP_SERVER` | host do FTP (ex.: `ftp.rafabytes.com`) |
-| Secret | `FTP_USERNAME` / `FTP_PASSWORD` | conta FTP |
-| Variable (opcional) | `FTP_SERVER_DIR` | se a conta FTP já abre dentro de `public_html`, use `chefmix/wp-content/themes/chefemix-theme/` |
-| Variable (opcional) | `FTP_PROTOCOL` | `ftps` (padrão), `ftp` ou `ftps-legacy` |
-
-Sem os secrets o build roda e o envio é só pulado. Não vão para o servidor: `src/js`, `src/css`, `node_modules`, `package*.json`, configs e este README (`src/icons.json` vai — o PHP lê os ícones dele). O `dist/` também fica versionado, então um `git pull` ou upload manual da pasta funciona sem Node no servidor — rode `npm run build` antes de commitar.
+O [.cpanel.yml](.cpanel.yml) copia o tema com `rsync` para `~/public_html/chefmix/wp-content/themes/chefemix-theme/`, apaga lá o que saiu do repositório e força pastas `755` / arquivos `644`. Não vão para o servidor: `src/js`, `src/css`, `node_modules`, `package*.json`, configs e este README (`src/icons.json` vai — o PHP lê os ícones dele). O clone do cPanel não pode ter alterações locais, senão o deploy fica bloqueado.
 
 O nome da pasta no servidor precisa continuar `chefemix-theme` (é o que o WordPress guarda como tema ativo).
 
-**Assets sem 403:** o [.htaccess](.htaccess) do tema libera explicitamente CSS/JS/fontes/imagens (sobrepõe bloqueios herdados), corrige o MIME do `.woff2`, manda CORS nas fontes (CDN, www ↔ sem www) e bloqueia só arquivos de desenvolvimento e o `.ftp-deploy-sync-state.json`. Se mesmo assim aparecer 403, confira as permissões no servidor: pastas `755`, arquivos `644`.
+**Assets sem 403:** além das permissões do deploy, o [.htaccess](.htaccess) do tema libera explicitamente CSS/JS/fontes/imagens (sobrepõe bloqueios herdados), corrige o MIME do `.woff2`, manda CORS nas fontes (CDN, www ↔ sem www) e bloqueia só arquivos de desenvolvimento.
 
 ### LiteSpeed Cache
 
