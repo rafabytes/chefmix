@@ -4,6 +4,6 @@
 # Pastas 755 e arquivos 644 sempre — permissão errada é a causa mais comum de 403 nos assets.
 deployment:
   tasks:
-    - export DEPLOYPATH=$HOME/public_html/chefmix/wp-content/themes/chefemix-theme/
+    - export DEPLOYPATH=$HOME/chefmix.appmaster.com.br/wp-content/themes/chefemix-theme/
     - /bin/mkdir -p $DEPLOYPATH
     - /usr/bin/rsync -rlpt --delete --chmod=Du=rwx,Dgo=rx,Fu=rw,Fgo=r --exclude=.git --exclude=.github --exclude=.cpanel.yml --exclude=.gitignore --exclude=.gitattributes --exclude=node_modules --exclude=.parcel-cache --exclude=/src/js --exclude=/src/css --exclude=/package.json --exclude=/package-lock.json --exclude=/tailwind.config.js --exclude=/.postcssrc --exclude=/README.md ./ $DEPLOYPATH
