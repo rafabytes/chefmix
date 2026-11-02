@@ -190,6 +190,18 @@ function cmx_chef_payload( ?WP_User $chef ): ?array {
 	];
 }
 
+/**
+ * Crédito da foto da receita (gravado por tools/seed-photos.php em fotos de bancos de imagem).
+ * Fotos enviadas pela equipe não têm crédito.
+ *
+ * @return array{author: string, author_url: string, site: string, page: string, license: string, license_url: string}|null
+ */
+function cmx_photo_credit( $post ): ?array {
+	$thumb  = get_post_thumbnail_id( $post );
+	$credit = $thumb ? get_post_meta( $thumb, 'cmx_credito', true ) : null;
+	return is_array( $credit ) && ! empty( $credit['author'] ) ? $credit : null;
+}
+
 /** Dados resumidos para cards e listagens. */
 function cmx_recipe_card( $post ): array {
 	$post    = get_post( $post );

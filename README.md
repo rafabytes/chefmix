@@ -12,7 +12,7 @@ npm install
 npm run build          # limpa dist/ e .parcel-cache e gera dist/ (produção)
 npm run dev            # parcel watch: recompila ao salvar
 
-php tools/setup.php    # ativa ACF PRO + tema, links permanentes /%postname%/
+php tools/setup.php    # ativa ACF PRO + tema, links permanentes /%postname%/ e cria a página Termos de uso
 php tools/seed-demo.php  # 8 cozinhas, 3 chefs, 1 assinante e 10 receitas (pode rodar de novo)
 ```
 

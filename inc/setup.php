@@ -58,6 +58,7 @@ add_action( 'wp_enqueue_scripts', function () {
 			'lostPassword' => wp_lostpassword_url(),
 			'savedUrl'     => home_url( '/salvos/' ),
 			'privacyUrl'   => get_privacy_policy_url(),
+			'termsUrl'     => cmx_terms_url(),
 			'google'       => (string) cmx_opt( 'google_client_id', '' ),
 			'register'     => (bool) cmx_opt( 'cadastro_email', true ),
 			'noSwup'       => cmx_swup_ignored_urls(),

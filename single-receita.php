@@ -14,6 +14,7 @@ while ( have_posts() ) :
 	$chef    = cmx_recipe_chef( $post_id );
 	$cuisine = cmx_recipe_cuisine( $post_id );
 	$favs    = cmx_favorites_count( $post_id );
+	$credit  = cmx_photo_credit( $post_id );
 	?>
 
 	<article class="container pt-8 sm:pt-12">
@@ -61,6 +62,13 @@ while ( have_posts() ) :
 					'icon_size' => 'h-16 w-16 sm:h-20 sm:w-20',
 				] );
 				?>
+				<?php if ( $credit ) : ?>
+					<p class="mt-3 px-3 text-right text-xs text-ink-mute">
+						Foto: <a href="<?php echo esc_url( $credit['author_url'] ); ?>" class="underline-offset-2 hover:underline" rel="noopener" target="_blank"><?php echo esc_html( $credit['author'] ); ?></a>
+						· <a href="<?php echo esc_url( $credit['page'] ); ?>" class="underline-offset-2 hover:underline" rel="noopener" target="_blank"><?php echo esc_html( $credit['site'] ); ?></a>
+						· <a href="<?php echo esc_url( $credit['license_url'] ); ?>" class="underline-offset-2 hover:underline" rel="noopener license" target="_blank"><?php echo esc_html( $credit['license'] ); ?></a>
+					</p>
+				<?php endif; ?>
 			</div>
 		</header>
 

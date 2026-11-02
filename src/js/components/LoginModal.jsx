@@ -258,6 +258,14 @@ export default function LoginModal() {
 
         <p className="mt-5 text-center text-xs leading-relaxed text-ink-mute">
           Sua conta serve só para salvar receitas e seguir chefs. Não pedimos foto e não publicamos nada em seu nome.
+          {cfg().termsUrl && (
+            <>
+              {' '}
+              <a className="underline" href={cfg().termsUrl}>
+                Termos de uso
+              </a>
+            </>
+          )}
           {cfg().privacyUrl && (
             <>
               {' '}

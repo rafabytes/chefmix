@@ -29,6 +29,20 @@ function cmx_opt( string $key, $default = '' ) {
 }
 
 /* -------------------------------------------------------------------------
+ * appMaster: o ChefMix é um dos sites do projeto (rodapé padrão e termos de uso)
+ * ---------------------------------------------------------------------- */
+
+const CMX_APPMASTER_URL       = 'https://appmaster.com.br/';
+const CMX_APPMASTER_ABOUT_URL = 'https://appmaster.com.br/sobre/';
+const CMX_REPO_URL            = 'https://github.com/rafabytes/chefmix';
+
+/** Página "Termos de uso" (criada por tools/setup.php), se publicada. */
+function cmx_terms_url(): string {
+	$page = get_page_by_path( 'termos-de-uso' );
+	return ( $page && 'publish' === $page->post_status ) ? (string) get_permalink( $page ) : '';
+}
+
+/* -------------------------------------------------------------------------
  * Ícones (mesma fonte do React: src/icons.json)
  * ---------------------------------------------------------------------- */
 

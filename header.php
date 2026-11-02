@@ -58,4 +58,4 @@ $nav = apply_filters( 'chefmix_nav_items', [
 		</form>
 	</div>
 
-	<main id="swup" class="transition-fade flex-1 pb-28 md:pb-0" tabindex="-1">
+	<main id="swup" class="transition-fade flex-1" tabindex="-1">
